@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Administrativo</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Dashboard Administrativo</h1>
+        <nav>
+            <ul>
+                <li><a href="#" onclick="showSection('produtos')">Produtos</a></li>
+                <li><a href="#" onclick="showSection('categorias')">Categorias</a></li>
+                <li><a href="#" onclick="showSection('banners')">Banners</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="produtos" class="active">
+            <h2>Cadastrar Produtos</h2>
+            <form id="produtoForm">
+                <input type="text" id="productName" placeholder="Nome do Produto" required>
+                <input type="text" id="productDescription" placeholder="Descrição" required>
+                <input type="number" id="productPrice" placeholder="Preço" required>
+                <input type="file" id="productImage" required>
+                <button type="submit">Cadastrar</button>
+            </form>
+        </section>
+        <section id="categorias">
+            <h2>Cadastrar Categorias</h2>
+            <form id="categoriaForm">
+                <input type="text" id="categoryName" placeholder="Nome da Categoria" required>
+                <input type="file" id="categoryImage" required>
+                <button type="submit">Cadastrar</button>
+            </form>
+        </section>
+        <section id="banners">
+            <h2>Cadastrar Banners</h2>
+            <form id="bannerForm">
+                <input type="text" placeholder="Título do Banner" required>
+                <input type="file" required>
+                <button type="submit">Cadastrar</button>
+            </form>
+        </section>
+    </main>
+    <script src="js/app.js"></script>
+</body>
+</html>
