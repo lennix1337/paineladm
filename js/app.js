@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Simulação de autenticação
             if (username === 'admin' && password === 'admin') {
+                sessionStorage.setItem('authenticated', 'true');
                 window.location.href = 'dashboard.html';
             } else {
                 alert('Usuário ou senha incorretos.');
