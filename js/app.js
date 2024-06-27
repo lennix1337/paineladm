@@ -1,3 +1,9 @@
+const API_BASE_URL = "https://rfcc.azurewebsites.net/v1";
+const PRODUCTS_ENDPOINT = `${API_BASE_URL}/products`;
+const CATEGORIES_ENDPOINT = `${API_BASE_URL}/categories`;
+const PRODUCT_VARIANTS_ENDPOINT = `${API_BASE_URL}/productVariant`;
+const PRODUCT_OPTIONS_ENDPOINT = `${API_BASE_URL}/productOption`;
+
 document.addEventListener("DOMContentLoaded", function () {
   const loginForm = document.getElementById("loginForm");
   if (loginForm) {
@@ -16,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
 function showSection(sectionId) {
   const sections = document.querySelectorAll("main section");
   sections.forEach((section) => section.classList.remove("active"));
@@ -40,48 +47,34 @@ if (produtoForm) {
     const originalPrice = document.getElementById("productOriginalPrice").value;
     const sellingPrice = document.getElementById("productSellingPrice").value;
     const imageFile = document.getElementById("productImage").files[0];
-
-    const productData = {
-      title: title,
-      description: description,
-      images: [], // As URLs das imagens serão gerenciadas separadamente
-      variants: [],
-      options: [],
-    };
+    const categoryId = document.getElementById("productCategory").value;
 
     try {
-      const productResponse = await fetch(
-        "https://rfcc.azurewebsites.net/v1/products",
-        {
-          method: "POST",
-          body: JSON.stringify(productData),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const productData = new FormData();
+      productData.append("Title",title);
+      productData.append("Description",description);
+      productData.append("Images",imageFile);
+      productData.append("CategoryId",categoryId);
+      
+      const productResponse = await fetch(PRODUCTS_ENDPOINT, {
+        method: "POST",
+        body: productData,
+      });
 
       if (productResponse.ok) {
         const createdProduct = await productResponse.json();
 
-        const variantData = {
-          productId: createdProduct.id,
-          originalPrice: parseFloat(originalPrice),
-          sellingPrice: parseFloat(sellingPrice),
-          title: title,
-          image: imageFile.name, // Assumindo que o arquivo da imagem será gerenciado separadamente
-        };
+        const variantData = new FormData();
+        variantData.append("ProductId",createdProduct.id);
+        variantData.append("Title",title);
+        variantData.append("OriginalPrice",originalPrice);
+        variantData.append("SellingPrice",sellingPrice);
+        variantData.append("Image",imageFile);
 
-        const variantResponse = await fetch(
-          "https://rfcc.azurewebsites.net/v1/productVariant",
-          {
-            method: "POST",
-            body: JSON.stringify(variantData),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const variantResponse = await fetch(PRODUCT_VARIANTS_ENDPOINT, {
+          method: "POST",
+          body: variantData,
+        });
 
         if (variantResponse.ok) {
           alert("Produto e variação cadastrados com sucesso!");
@@ -107,22 +100,14 @@ if (categoriaForm) {
     const name = document.getElementById("categoryName").value;
     const imageFile = document.getElementById("categoryImage").files[0];
 
-    const categoryData = {
-      name: name,
-      image: imageFile.name, // Assumindo que o arquivo da imagem será gerenciado separadamente
-    };
-
     try {
-      const response = await fetch(
-        "https://rfcc.azurewebsites.net/v1/categories",
-        {
-          method: "POST",
-          body: JSON.stringify(categoryData),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const categoryData = new FormData();
+      categoryData.append("Name",name);
+      categoryData.append("Image",imageFile);
+      const response = await fetch(CATEGORIES_ENDPOINT, {
+        method: "POST",
+        body: categoryData
+      });
 
       if (response.ok) {
         alert("Categoria cadastrada com sucesso!");
@@ -137,17 +122,9 @@ if (categoriaForm) {
   });
 }
 
-const bannerForm = document.getElementById("bannerForm");
-if (bannerForm) {
-  bannerForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-    alert("Banner cadastrado com sucesso!");
-  });
-}
-
 async function fetchProducts() {
   try {
-    const response = await fetch("https://rfcc.azurewebsites.net/v1/products");
+    const response = await fetch(PRODUCTS_ENDPOINT);
     const products = await response.json();
     const productList = document
       .getElementById("productList")
@@ -155,19 +132,21 @@ async function fetchProducts() {
     const productMessage = document.getElementById("productMessage");
 
     productList.innerHTML = "";
-    if (products === "Não há produtos cadastrados") {
+    if (products.length === 0) {
       productMessage.classList.remove("hidden");
     } else {
       productMessage.classList.add("hidden");
       products.forEach((product) => {
         const row = document.createElement("tr");
         row.innerHTML = `
-                    <td>${product.title}</td>
-                    <td>${product.description}</td>
-                    <td>${product.variants[0].originalPrice}</td>
-                    <td>${product.variants[0].sellingPrice}</td>
-                    <td><img src="uploads/${product.variants[0].image}" alt="${product.title}" width="50"></td>
-                `;
+                  <td>${product.title}</td>
+                  <td>${product.description}</td>
+                  <td>${product.variants[0]?.originalPrice || ""}</td>
+                  <td>${product.variants[0]?.sellingPrice || ""}</td>
+                  <td><img src="${product.images[0]}" alt="${
+          product.title
+        }" width="100"></td>
+              `;
         productList.appendChild(row);
       });
     }
@@ -178,9 +157,7 @@ async function fetchProducts() {
 
 async function fetchCategories() {
   try {
-    const response = await fetch(
-      "https://rfcc.azurewebsites.net/v1/categories"
-    );
+    const response = await fetch(CATEGORIES_ENDPOINT);
     const categories = await response.json();
     const categoryList = document
       .getElementById("categoryList")
@@ -188,16 +165,16 @@ async function fetchCategories() {
     const categoryMessage = document.getElementById("categoryMessage");
 
     categoryList.innerHTML = "";
-    if (categories === "Não há categorias cadastradas") {
+    if (categories.length === 0) {
       categoryMessage.classList.remove("hidden");
     } else {
       categoryMessage.classList.add("hidden");
       categories.forEach((category) => {
         const row = document.createElement("tr");
         row.innerHTML = `
-                    <td>${category.name}</td>
-                    <td><img src="uploads/${category.image}" alt="${category.name}" width="50"></td>
-                `;
+                  <td>${category.name}</td>
+                  <td><img src="${category.image}" alt="${category.name}" width="100"></td>
+              `;
         categoryList.appendChild(row);
       });
     }
@@ -205,3 +182,23 @@ async function fetchCategories() {
     console.error("Erro ao buscar categorias:", error);
   }
 }
+
+async function fetchCategoriesForm() {
+  try {
+      const response = await fetch(CATEGORIES_ENDPOINT);
+      const categories = await response.json();
+      const categorySelect = document.getElementById('productCategory');
+      categorySelect.innerHTML = '';
+
+      categories.forEach(category => {
+          const option = document.createElement('option');
+          option.value = category.id;
+          option.textContent = category.name;
+          categorySelect.appendChild(option);
+      });
+  } catch (error) {
+      console.error('Erro ao buscar categorias:', error);
+  }
+}
+
+fetchCategoriesForm();

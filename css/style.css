@@ -1,158 +1,188 @@
 /* Estilos Gerais */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: linear-gradient(135deg, #914ec8, #fb8fe9);
-    color: #fff;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #914ec8, #fb8fe9);
+  color: #333;
 }
 
 /* Container de Login */
 .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .login-card {
-    background: #fff;
-    color: #333;
-    padding: 2em;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    max-width: 400px;
-    width: 100%;
-    text-align: center;
+  background: #fff;
+  color: #333;
+  padding: 2em;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
 }
 
 .login-card h1 {
-    margin-bottom: 1em;
-    font-size: 1.5em;
+  margin-bottom: 1em;
+  font-size: 1.5em;
 }
 
 .input-group {
-    position: relative;
-    margin-bottom: 1em;
+  position: relative;
+  margin-bottom: 1em;
 }
 
 .input-group i {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #666;
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
 }
 
 .input-group input {
-    padding: 0.75em 2.5em 0.75em 2.5em;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1em;
+  padding: 0.75em 2.5em 0.75em 2.5em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1em;
 }
 
 input:focus {
-    border-color: #914ec8;
-    outline: none;
+  border-color: #914ec8;
+  outline: none;
 }
 
 button {
-    width: 100%;
-    padding: 0.75em;
-    border: none;
-    border-radius: 5px;
-    background: #914ec8;
-    color: #fff;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background 0.3s;
+  width: 100%;
+  padding: 0.75em;
+  border: none;
+  border-radius: 5px;
+  background: #914ec8;
+  color: #fff;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
 button:hover {
-    background: #8f94fb;
+  background: #8f94fb;
 }
 
 /* Estilos do Dashboard */
 header {
-    background: #333;
-    color: #fff;
-    width: 100%;
-    padding: 1em 0;
-    text-align: center;
-    position: fixed;
-    top: 0;
+  background: #333;
+  color: #fff;
+  width: 100%;
+  padding: 1em 0;
+  text-align: center;
+  position: fixed;
+  top: 0;
 }
 
 nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
 }
 
 nav ul li {
-    margin: 0 1em;
+  margin: 0 1em;
 }
 
 nav ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 1.2em;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.2em;
 }
 
 main {
-    width: 100%;
-    max-width: 800px;
-    margin: 80px auto 0 auto;
-    padding: 1em;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 800px;
+  margin: 80px auto 0 auto;
+  padding: 1em;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 section {
-    display: none;
+  display: none;
 }
 
 section.active {
-    display: block;
+  display: block;
 }
 
 section h2 {
-    margin-bottom: 1em;
-    font-size: 1.5em;
-    color: #333;
+  margin-bottom: 1em;
+  font-size: 1.5em;
+  color: #333;
 }
 
 form {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
-form input, form button {
-    margin-bottom: 1em;
-    padding: 0.75em;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1em;
+form input,
+form button {
+  margin-bottom: 1em;
+  padding: 0.75em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1em;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+.categoriaFormLabel {
+  flex: 1; /* Faz o label ocupar o máximo de espaço disponível */
+  margin-right: -7em; /* Espaçamento entre o label e o select */
+  font-size: 1em;
+  margin-left: 1em;
+}
+
+.categoriaForm {
+  flex: 3; /* Faz o select ocupar o restante do espaço */
+  padding: 0.75em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1em;
+  appearance: none; /* Remove o estilo padrão do elemento */
+  background-color: white; /* Cor de fundo */
+}
+
+.categoriaForm:focus {
+  outline: none; /* Remove o contorno ao focar */
+  border-color: #3498db; /* Cor da borda ao focar */
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5); /* Sombra ao focar */
 }
 
 form button {
-    background: #914ec8;
-    color: #fff;
-    cursor: pointer;
-    transition: background 0.3s;
+  background: #914ec8;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
 form button:hover {
-    background: #8f94fb;
+  background: #8f94fb;
 }
 
 .hidden {
-    display: none;
+  display: none;
 }

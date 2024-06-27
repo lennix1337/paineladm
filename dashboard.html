@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Administrativo</title>
     <link rel="stylesheet" href="css/style.css">
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const authenticated = sessionStorage.getItem('authenticated');
             if (!authenticated) {
                 window.location.href = 'index.html';
@@ -17,6 +18,7 @@
         });
     </script>
 </head>
+
 <body>
     <header>
         <h1>Dashboard Administrativo</h1>
@@ -24,7 +26,6 @@
             <ul>
                 <li><a href="#" onclick="showSection('produtos')">Produtos</a></li>
                 <li><a href="#" onclick="showSection('categorias')">Categorias</a></li>
-                <li><a href="#" onclick="showSection('banners')">Banners</a></li>
                 <li><a href="#" onclick="showSection('listarProdutos')">Listar Produtos</a></li>
                 <li><a href="#" onclick="showSection('listarCategorias')">Listar Categorias</a></li>
             </ul>
@@ -38,6 +39,12 @@
                 <input type="text" id="productDescription" placeholder="Descrição" required>
                 <input type="number" id="productOriginalPrice" placeholder="Preço Original" required>
                 <input type="number" id="productSellingPrice" placeholder="Preço de Venda" required>
+                <div class="form-row">
+                    <label for="productCategory" class="categoriaFormLabel">Categoria:</label>
+                    <select id="productCategory" class="categoriaForm" name="productCategory" required>
+                        <!-- Categorias serão carregadas dinamicamente -->
+                    </select>
+                </div>
                 <input type="file" id="productImage">
                 <button type="submit">Cadastrar</button>
             </form>
@@ -47,14 +54,6 @@
             <form id="categoriaForm">
                 <input type="text" id="categoryName" placeholder="Nome da Categoria" required>
                 <input type="file" id="categoryImage" required>
-                <button type="submit">Cadastrar</button>
-            </form>
-        </section>
-        <section id="banners">
-            <h2>Cadastrar Banners</h2>
-            <form id="bannerForm">
-                <input type="text" placeholder="Título do Banner" required>
-                <input type="file" required>
                 <button type="submit">Cadastrar</button>
             </form>
         </section>
@@ -94,4 +93,5 @@
     </main>
     <script src="js/app.js"></script>
 </body>
+
 </html>
