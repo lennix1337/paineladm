@@ -3,6 +3,7 @@ const PRODUCTS_ENDPOINT = `${API_BASE_URL}/products`;
 const CATEGORIES_ENDPOINT = `${API_BASE_URL}/categories`;
 const PRODUCT_VARIANTS_ENDPOINT = `${API_BASE_URL}/productVariant`;
 const PRODUCT_OPTIONS_ENDPOINT = `${API_BASE_URL}/productOption`;
+const ORDERS_ENDPOINT = `${API_BASE_URL}/orders`;
 
 document.addEventListener("DOMContentLoaded", function () {
   const loginForm = document.getElementById("loginForm");
@@ -34,7 +35,9 @@ function showSection(sectionId) {
     fetchProducts();
   } else if (sectionId === "listarCategorias") {
     fetchCategories();
-  }
+  } else if (sectionId === "listarOrdens") {
+    fetchOrders();
+  } 
 }
 
 const produtoForm = document.getElementById("produtoForm");
@@ -198,6 +201,30 @@ async function fetchCategoriesForm() {
       });
   } catch (error) {
       console.error('Erro ao buscar categorias:', error);
+  }
+}
+
+async function fetchOrders() {
+  try {
+      const response = await fetch(ORDERS_ENDPOINT);
+      const orders = await response.json();
+      const ordensList = document.getElementById('ordensList');
+
+      ordensList.innerHTML = '';
+
+      if (orders.length === 0) {
+          const noOrdersMessage = document.createElement('li');
+          noOrdersMessage.textContent = 'Não há ordens cadastradas.';
+          ordensList.appendChild(noOrdersMessage);
+      } else {
+          orders.forEach(order => {
+              const li = document.createElement('li');
+              li.textContent = `ID: ${order.id} - Status: ${order.status} - Total: ${order.total}`;
+              ordensList.appendChild(li);
+          });
+      }
+  } catch (error) {
+      console.error('Erro ao buscar ordens:', error);
   }
 }
 
