@@ -186,3 +186,55 @@ form button:hover {
 .hidden {
   display: none;
 }
+#orderList {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+#orderList th, #orderList td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+#orderList th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  overflow: hidden; /* Ensure content doesn't overflow */
+}
+
+.order-item strong {
+  margin-right: 8px;
+}
+
+.order-item img {
+  border-radius: 5px;
+  width: 200px; /* Adjust the width as needed */
+  height: auto;
+  object-fit: cover;
+  margin-left: 8px;
+}
+
+@media (max-width: 768px) {
+  #orderList th, #orderList td {
+      padding: 10px;
+  }
+
+  .order-item {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+
+  .order-item img {
+      margin-left: 0;
+      margin-top: 5px;
+  }
+}

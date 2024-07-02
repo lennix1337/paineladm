@@ -3,7 +3,7 @@ const PRODUCTS_ENDPOINT = `${API_BASE_URL}/products`;
 const CATEGORIES_ENDPOINT = `${API_BASE_URL}/categories`;
 const PRODUCT_VARIANTS_ENDPOINT = `${API_BASE_URL}/productVariant`;
 const PRODUCT_OPTIONS_ENDPOINT = `${API_BASE_URL}/productOption`;
-const ORDERS_ENDPOINT = `${API_BASE_URL}/orders`;
+const ORDERS_ENDPOINT = `${API_BASE_URL}/checkout`;
 
 document.addEventListener("DOMContentLoaded", function () {
   const loginForm = document.getElementById("loginForm");
@@ -37,7 +37,7 @@ function showSection(sectionId) {
     fetchCategories();
   } else if (sectionId === "listarOrdens") {
     fetchOrders();
-  } 
+  }
 }
 
 const produtoForm = document.getElementById("produtoForm");
@@ -54,11 +54,11 @@ if (produtoForm) {
 
     try {
       const productData = new FormData();
-      productData.append("Title",title);
-      productData.append("Description",description);
-      productData.append("Images",imageFile);
-      productData.append("CategoryId",categoryId);
-      
+      productData.append("Title", title);
+      productData.append("Description", description);
+      productData.append("Images", imageFile);
+      productData.append("CategoryId", categoryId);
+
       const productResponse = await fetch(PRODUCTS_ENDPOINT, {
         method: "POST",
         body: productData,
@@ -68,11 +68,11 @@ if (produtoForm) {
         const createdProduct = await productResponse.json();
 
         const variantData = new FormData();
-        variantData.append("ProductId",createdProduct.id);
-        variantData.append("Title",title);
-        variantData.append("OriginalPrice",originalPrice);
-        variantData.append("SellingPrice",sellingPrice);
-        variantData.append("Image",imageFile);
+        variantData.append("ProductId", createdProduct.id);
+        variantData.append("Title", title);
+        variantData.append("OriginalPrice", originalPrice);
+        variantData.append("SellingPrice", sellingPrice);
+        variantData.append("Image", imageFile);
 
         const variantResponse = await fetch(PRODUCT_VARIANTS_ENDPOINT, {
           method: "POST",
@@ -105,11 +105,11 @@ if (categoriaForm) {
 
     try {
       const categoryData = new FormData();
-      categoryData.append("Name",name);
-      categoryData.append("Image",imageFile);
+      categoryData.append("Name", name);
+      categoryData.append("Image", imageFile);
       const response = await fetch(CATEGORIES_ENDPOINT, {
         method: "POST",
-        body: categoryData
+        body: categoryData,
       });
 
       if (response.ok) {
@@ -188,19 +188,19 @@ async function fetchCategories() {
 
 async function fetchCategoriesForm() {
   try {
-      const response = await fetch(CATEGORIES_ENDPOINT);
-      const categories = await response.json();
-      const categorySelect = document.getElementById('productCategory');
-      categorySelect.innerHTML = '';
+    const response = await fetch(CATEGORIES_ENDPOINT);
+    const categories = await response.json();
+    const categorySelect = document.getElementById("productCategory");
+    categorySelect.innerHTML = "";
 
-      categories.forEach(category => {
-          const option = document.createElement('option');
-          option.value = category.id;
-          option.textContent = category.name;
-          categorySelect.appendChild(option);
-      });
+    categories.forEach((category) => {
+      const option = document.createElement("option");
+      option.value = category.id;
+      option.textContent = category.name;
+      categorySelect.appendChild(option);
+    });
   } catch (error) {
-      console.error('Erro ao buscar categorias:', error);
+    console.error("Erro ao buscar categorias:", error);
   }
 }
 
@@ -208,23 +208,34 @@ async function fetchOrders() {
   try {
       const response = await fetch(ORDERS_ENDPOINT);
       const orders = await response.json();
-      const ordensList = document.getElementById('ordensList');
+      const orderList = document.getElementById("listarOrdens").querySelector("tbody");
+      const orderMessage = document.getElementById("orderMessage");
 
-      ordensList.innerHTML = '';
-
+      orderList.innerHTML = "";
       if (orders.length === 0) {
-          const noOrdersMessage = document.createElement('li');
-          noOrdersMessage.textContent = 'Não há ordens cadastradas.';
-          ordensList.appendChild(noOrdersMessage);
+          orderMessage.classList.remove("hidden");
       } else {
-          orders.forEach(order => {
-              const li = document.createElement('li');
-              li.textContent = `ID: ${order.id} - Status: ${order.status} - Total: ${order.total}`;
-              ordensList.appendChild(li);
+          orderMessage.classList.add("hidden");
+          orders.forEach((order) => {
+              const row = document.createElement("tr");
+              const items = order.items.map(item => `
+                  <div class="order-item">
+                      <strong>${item.title}</strong> - R$ ${item.productVariant.sellingPrice.toFixed(2)}
+                      <img src="${item.productVariant.image}" alt="${item.title}" class="order-item-image">
+                  </div>
+              `).join("");
+              row.innerHTML = `
+                  <td>${order.id}</td>
+                  <td>${order.customerName}</td>
+                  <td>${order.customerPhone}</td>
+                  <td>R$ ${order.total.toFixed(2)}</td>
+                  <td>${items}</td>
+              `;
+              orderList.appendChild(row);
           });
       }
   } catch (error) {
-      console.error('Erro ao buscar ordens:', error);
+      console.error("Erro ao buscar ordens:", error);
   }
 }
 

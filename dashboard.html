@@ -93,9 +93,21 @@
         </section>
         <section id="listarOrdens">
             <h2>Listagem de Ordens</h2>
-            <ul id="ordensList">
-                <!-- Ordens serão carregadas dinamicamente -->
-            </ul>
+            <p id="orderMessage" class="hidden">Não há ordens cadastradas.</p>
+            <table id="orderList">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Telefone</th>
+                        <th>Total</th>
+                        <th>Itens</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Ordens serão carregadas dinamicamente -->
+                </tbody>
+            </table>
         </section>
     </main>
     <script src="js/app.js"></script>
