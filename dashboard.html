@@ -36,9 +36,13 @@
         <section id="produtos" class="active">
             <h2>Cadastrar Produtos</h2>
             <form id="produtoForm">
+                <label for="productTitle">Título:</label>
                 <input type="text" id="productTitle" placeholder="Título do Produto" required>
+                <label for="productDescription">Descrição:</label>
                 <input type="text" id="productDescription" placeholder="Descrição" required>
+                <label for="productOriginalPrice">Preço Original:</label>
                 <input type="number" id="productOriginalPrice" placeholder="Preço Original" required>
+                <label for="productSellingPrice">Preço de Venda:</label>
                 <input type="number" id="productSellingPrice" placeholder="Preço de Venda" required>
                 <div class="form-row">
                     <label for="productCategory" class="categoriaFormLabel">Categoria:</label>
@@ -46,6 +50,7 @@
                         <!-- Categorias serão carregadas dinamicamente -->
                     </select>
                 </div>
+                <label for="productImage">Imagem:</label>
                 <input type="file" id="productImage">
                 <button type="submit">Cadastrar</button>
             </form>
@@ -53,7 +58,9 @@
         <section id="categorias">
             <h2>Cadastrar Categorias</h2>
             <form id="categoriaForm">
+                <label for="categoryName">Nome:</label>
                 <input type="text" id="categoryName" placeholder="Nome da Categoria" required>
+                <label for="categoryImage">Imagem:</label>
                 <input type="file" id="categoryImage" required>
                 <button type="submit">Cadastrar</button>
             </form>
@@ -61,7 +68,7 @@
         <section id="listarProdutos">
             <h2>Lista de Produtos</h2>
             <div id="productMessage" class="hidden">Não há produtos cadastrados.</div>
-            <table id="productList">
+            <table id="productList" class="table">
                 <thead>
                     <tr>
                         <th>Título</th>
@@ -69,6 +76,7 @@
                         <th>Preço Original</th>
                         <th>Preço de Venda</th>
                         <th>Imagem</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -79,7 +87,7 @@
         <section id="listarCategorias">
             <h2>Lista de Categorias</h2>
             <div id="categoryMessage" class="hidden">Não há categorias cadastradas.</div>
-            <table id="categoryList">
+            <table id="categoryList" class="table">
                 <thead>
                     <tr>
                         <th>Nome</th>
@@ -94,7 +102,7 @@
         <section id="listarOrdens">
             <h2>Listagem de Ordens</h2>
             <p id="orderMessage" class="hidden">Não há ordens cadastradas.</p>
-            <table id="orderList">
+            <table id="orderList" class="table">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -102,6 +110,7 @@
                         <th>Telefone</th>
                         <th>Total</th>
                         <th>Itens</th>
+                        <th>Imagem</th>
                     </tr>
                 </thead>
                 <tbody>

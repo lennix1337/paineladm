@@ -142,19 +142,37 @@ async function fetchProducts() {
       products.forEach((product) => {
         const row = document.createElement("tr");
         row.innerHTML = `
-                  <td>${product.title}</td>
-                  <td>${product.description}</td>
-                  <td>${product.variants[0]?.originalPrice || ""}</td>
-                  <td>${product.variants[0]?.sellingPrice || ""}</td>
-                  <td><img src="${product.images[0]}" alt="${
-          product.title
-        }" width="100"></td>
-              `;
+                    <td>${product.title}</td>
+                    <td>${product.description}</td>
+                    <td>${product.variants[0]?.originalPrice || ""}</td>
+                    <td>${product.variants[0]?.sellingPrice || ""}</td>
+                    <td><img src="${product.images[0]}" alt="${product.title}" width="100"></td>
+                    <td>
+                        <button onclick="deleteProduct('${product.id}')">Excluir</button>
+                    </td>
+                `;
         productList.appendChild(row);
       });
     }
   } catch (error) {
     console.error("Erro ao buscar produtos:", error);
+  }
+}
+
+async function deleteProduct(productId) {
+  try {
+      const response = await fetch(`${PRODUCT_VARIANTS_ENDPOINT}/${productId}`, {
+          method: 'DELETE',
+      });
+
+      if (response.ok) {
+          fetchProducts();
+          console.log(`Produto com ID ${productId} excluído com sucesso.`);
+      } else {
+          console.error(`Erro ao excluir produto com ID ${productId}.`);
+      }
+  } catch (error) {
+      console.error("Erro ao excluir produto:", error);
   }
 }
 
@@ -208,7 +226,7 @@ async function fetchOrders() {
   try {
       const response = await fetch(ORDERS_ENDPOINT);
       const orders = await response.json();
-      const orderList = document.getElementById("listarOrdens").querySelector("tbody");
+      const orderList = document.getElementById("orderList").querySelector("tbody");
       const orderMessage = document.getElementById("orderMessage");
 
       orderList.innerHTML = "";
@@ -218,19 +236,31 @@ async function fetchOrders() {
           orderMessage.classList.add("hidden");
           orders.forEach((order) => {
               const row = document.createElement("tr");
-              const items = order.items.map(item => `
-                  <div class="order-item">
-                      <strong>${item.title}</strong> - R$ ${item.productVariant.sellingPrice.toFixed(2)}
-                      <img src="${item.productVariant.image}" alt="${item.title}" class="order-item-image">
-                  </div>
-              `).join("");
+              
+              // Criar colunas para cada propriedade da ordem
               row.innerHTML = `
                   <td>${order.id}</td>
                   <td>${order.customerName}</td>
                   <td>${order.customerPhone}</td>
                   <td>R$ ${order.total.toFixed(2)}</td>
-                  <td>${items}</td>
+                  <td>
+                      <div class="order-items">
+                          ${order.items.map(item => `
+                              <div class="order-item">
+                                  <strong>${item.title}</strong> - R$ ${item.productVariant.sellingPrice.toFixed(2)}
+                              </div>
+                          `).join("")}
+                      </div>
+                  </td>
+                  <td>
+                      <div class="order-item">
+                          ${order.items.map(item => `
+                              <img src="${item.productVariant.image}" alt="${item.title}" class="order-item-image">
+                          `).join("")}
+                      </div>
+                  </td>
               `;
+              
               orderList.appendChild(row);
           });
       }
@@ -238,5 +268,6 @@ async function fetchOrders() {
       console.error("Erro ao buscar ordens:", error);
   }
 }
+
 
 fetchCategoriesForm();
