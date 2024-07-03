@@ -161,7 +161,7 @@ async function fetchProducts() {
 
 async function deleteProduct(productId) {
   try {
-      const response = await fetch(`${PRODUCT_VARIANTS_ENDPOINT}/${productId}`, {
+      const response = await fetch(`${PRODUCTS_ENDPOINT}/${productId}`, {
           method: 'DELETE',
       });
 
@@ -195,12 +195,31 @@ async function fetchCategories() {
         row.innerHTML = `
                   <td>${category.name}</td>
                   <td><img src="${category.image}" alt="${category.name}" width="100"></td>
+                  <td><button onclick="deleteCategory('${category.id}')">Excluir</button></td>
               `;
         categoryList.appendChild(row);
       });
     }
   } catch (error) {
     console.error("Erro ao buscar categorias:", error);
+  }
+}
+
+async function deleteCategory(categoryId) {
+  try {
+      const response = await fetch(`${CATEGORIES_ENDPOINT}/${categoryId}`, {
+          method: 'DELETE',
+      });
+
+      if (response.ok) {
+          // Atualizar a lista de categorias após a exclusão
+          fetchCategories();
+          console.log(`Categoria com ID ${categoryId} excluída com sucesso.`);
+      } else {
+          console.error(`Erro ao excluir categoria com ID ${categoryId}.`);
+      }
+  } catch (error) {
+      console.error("Erro ao excluir categoria:", error);
   }
 }
 
